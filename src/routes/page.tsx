@@ -12,10 +12,17 @@ const Index = () => {
     try {
       const encrypted = await encryptString(state.decryptedText);
       setState({ ...state, encryptedText: encrypted });
-      const decrypted = await decryptString(encrypted);
+    } catch (err: any) {
+      alert(`Encrypt Error: ${err.message}`);
+    }
+  };
+
+  const decryptText = async () => {
+    try {
+      const decrypted = await decryptString(state.encryptedText);
       setState({ ...state, resultedDecryptedText: decrypted });
     } catch (err: any) {
-      alert(err.message);
+      alert(`Decrypt Error: ${err.message}`);
     }
   };
 
@@ -31,6 +38,7 @@ const Index = () => {
       <button onClick={encryptText}>Encrypt</button>
       <div>
         <h2>{state.encryptedText}</h2>
+        <button onClick={decryptText}>Decrypt</button>
       </div>
     </main>
   );
