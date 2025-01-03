@@ -1,15 +1,19 @@
+import { decryptString, encryptString } from "@/crypto";
 import { useState } from "react";
-import encryptString from "@/encrypt";
 
 const Index = () => {
   const [state, setState] = useState({
     encryptedText: "",
     decryptedText: "",
+    resultedDecryptedText: "",
   });
 
   const encryptText = async () => {
     try {
       const encrypted = await encryptString(state.decryptedText);
+      setState({ ...state, encryptedText: encrypted });
+      const decrypted = await decryptString(encrypted);
+      setState({ ...state, resultedDecryptedText: decrypted });
     } catch (err: any) {
       alert(err.message);
     }
