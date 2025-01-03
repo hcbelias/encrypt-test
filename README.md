@@ -1,5 +1,7 @@
 # Modern.js App
 
+The goal is to replicate OperationError: The operation failed for an operation-specific reason
+
 ## Setup
 
 Install the dependencies:
