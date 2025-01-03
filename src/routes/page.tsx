@@ -1,4 +1,5 @@
 import { useState } from "react";
+import encryptString from "@/encrypt";
 
 const Index = () => {
   const [state, setState] = useState({
@@ -6,7 +7,13 @@ const Index = () => {
     decryptedText: "",
   });
 
-  const encryptText = () => {};
+  const encryptText = async () => {
+    try {
+      const encrypted = await encryptString(state.decryptedText);
+    } catch (err: any) {
+      alert(err.message);
+    }
+  };
 
   return (
     <main>

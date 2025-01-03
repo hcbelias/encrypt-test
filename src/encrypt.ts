@@ -1,24 +1,7 @@
-export const STAGING_PRIVACY_WIDGET_PUBLIC_PEM = `-----BEGIN PUBLIC KEY-----
------END PUBLIC KEY-----
-`;
+import { PUBLIC_PEM } from "./public-key";
 
-export const encryptCVV = (cvv: string) => {
-  return encryptString(cvv, true);
-};
-
-export const encryptCardNumber = (cardNumber: string) => {
-  return encryptString(cardNumber, false);
-};
-
-export const encryptString = async (plaintext: string, encryptEmptyString: boolean) => {
-  if (!encryptEmptyString && !plaintext) {
-    // If the string is not allowed to be empty, return an empty string
-    // This will allow us to trigger the FE validation in case of missing data
-    // If the string is allowed to be empty, we can return the encryptedstring
-    return "";
-  }
-  const publicKey = STAGING_PRIVACY_WIDGET_PUBLIC_PEM;
-  const importedRsaKey = await importRsaKey(publicKey);
+const encryptString = async (plaintext: string) => {
+  const importedRsaKey = await importRsaKey(PUBLIC_PEM);
   const encrypted = await window.crypto.subtle.encrypt(
     {
       name: "RSA-OAEP",
@@ -46,7 +29,7 @@ const arrayBufferToString = (buffer: ArrayBuffer) => {
   return String.fromCharCode(...new Uint8Array(buffer));
 };
 
-export const importRsaKey = (pem: string) => {
+const importRsaKey = (pem: string) => {
   // fetch the part of the PEM string between header and footer
   const pemHeader = "-----BEGIN PUBLIC KEY-----";
   const pemFooter = "-----END PUBLIC KEY-----";
@@ -67,3 +50,5 @@ export const importRsaKey = (pem: string) => {
     ["encrypt"]
   );
 };
+
+export default encryptString;
